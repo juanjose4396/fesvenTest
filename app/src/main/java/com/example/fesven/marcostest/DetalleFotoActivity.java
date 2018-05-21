@@ -2,16 +2,20 @@ package com.example.fesven.marcostest;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
@@ -42,9 +46,15 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
     public void loadData(){
         bitmap = FotoSingleton.getInstance().getBitmap();
         imageResource = FotoSingleton.getInstance().getImageResource();
+        //Uri foto = convertBitmapUri(bitmap,"foto");
+        //imageViewMarco.setImageResource(imageResource);
         imageViewFoto.setImageBitmap(bitmap);
-        imageViewMarco.setImageResource(imageResource);
-        Toast.makeText(this,imageResource+"",Toast.LENGTH_LONG).show();
+        imageViewFoto.buildDrawingCache();
+        Bitmap bmap = imageViewFoto.getDrawingCache();
+        Log.d("aaaaa",bmap.getWidth()+"");
+        Picasso.get().load(imageResource).resize(bmap.getWidth(),bmap.getHeight()).into(imageViewFoto);
+
+
     }
 
     @Override
@@ -58,13 +68,19 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
 
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/jpeg");
+
+        Uri imageUri = convertBitmapUri(bm,"compartir");
+        share.putExtra(Intent.EXTRA_STREAM, imageUri);
+        startActivity(Intent.createChooser(share, "Select"));
+    }
+
+    public Uri convertBitmapUri(Bitmap bm,String title){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(getContentResolver(),
-                bm, "Title", null);
+                bm, title, null);
         Uri imageUri =  Uri.parse(path);
-        share.putExtra(Intent.EXTRA_STREAM, imageUri);
-        startActivity(Intent.createChooser(share, "Select"));
+        return imageUri;
     }
 
 }
