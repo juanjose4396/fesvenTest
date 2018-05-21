@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">marcos test</string>
+    <string name="title_activity_detalle_foto">DetalleFotoActivity</string>
+    <string name="compartir">COMPARTIR</string>
+    <string name="volver">VOLVER</string>
+</resources>
