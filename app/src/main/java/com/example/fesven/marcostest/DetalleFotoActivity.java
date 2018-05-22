@@ -49,12 +49,10 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
         //Uri foto = convertBitmapUri(bitmap,"foto");
         //imageViewMarco.setImageResource(imageResource);
         imageViewFoto.setImageBitmap(bitmap);
-        imageViewFoto.buildDrawingCache();
+       /* imageViewFoto.buildDrawingCache();
         Bitmap bmap = imageViewFoto.getDrawingCache();
         Log.d("aaaaa",bmap.getWidth()+"");
-        Picasso.get().load(imageResource).resize(bmap.getWidth(),bmap.getHeight()).into(imageViewFoto);
-
-
+        Picasso.get().load(imageResource).resize(bmap.getWidth(),bmap.getHeight()).into(imageViewFoto);*/
     }
 
     @Override

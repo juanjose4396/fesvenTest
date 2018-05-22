@@ -20,7 +20,8 @@
         <activity
             android:name=".DetalleFotoActivity"
             android:label="@string/title_activity_detalle_foto"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 </manifest>

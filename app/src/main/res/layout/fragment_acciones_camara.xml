@@ -13,7 +13,7 @@
 
         <ImageView
             android:id="@+id/btnGirarCamara"
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="70dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
@@ -39,7 +39,7 @@
 
         <ImageView
             android:id="@+id/btnFlash"
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="70dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
