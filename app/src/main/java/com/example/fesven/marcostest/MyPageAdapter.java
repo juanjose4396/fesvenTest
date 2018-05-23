@@ -1,12 +1,18 @@
 package com.example.fesven.marcostest;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -35,14 +41,23 @@ public class MyPageAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup view, int position) {
+    public Object instantiateItem(ViewGroup view, final int position) {
         View imageLayout = inflater.inflate(R.layout.item_view_pager, view, false);
 
         assert imageLayout != null;
         final ImageView imageView = imageLayout
                 .findViewById(R.id.imageViewMarco);
 
-        imageView.setImageResource(IMAGES.get(position));
+        ViewTreeObserver vto = imageView.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            public boolean onPreDraw() {
+                imageView.getViewTreeObserver().removeOnPreDrawListener(this);
+                int finalHeight = imageView.getMeasuredHeight();
+                int finalWidth = imageView.getMeasuredWidth();
+                Picasso.get().load(IMAGES.get(position)).resize(finalWidth,finalHeight).into(imageView);
+                return true;
+            }
+        });
 
         view.addView(imageLayout, 0);
 

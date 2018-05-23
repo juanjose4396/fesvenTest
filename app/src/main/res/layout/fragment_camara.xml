@@ -41,7 +41,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:ipi_pageIndicatorColor="@color/ColorUnselect"
-            app:ipi_currentPageIndicatorColor="@color/colorAzul" />
+            app:ipi_currentPageIndicatorColor="@color/colorAzul"
+            android:paddingTop="2dp"/>
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

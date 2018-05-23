@@ -5,9 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.pixelcan.inkpageindicator.InkPageIndicator;
 import com.wonderkiln.camerakit.CameraView;
 import java.util.ArrayList;
@@ -89,7 +92,6 @@ public class CamaraFragment extends Fragment{
     private void initViewpager(View view) {
         for(int i=0;i<IMAGES.length;i++){
             ImagesArray.add(IMAGES[i]);
-
         }
         mPager = view.findViewById(R.id.viewPagerMarcos);
         mPager.setAdapter(new MyPageAdapter(getActivity().getApplicationContext(),ImagesArray));
