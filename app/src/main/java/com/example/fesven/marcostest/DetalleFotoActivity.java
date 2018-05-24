@@ -12,12 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-
-import com.squareup.picasso.Picasso;
-
 import java.io.ByteArrayOutputStream;
 
-public class DetalleFotoActivity extends AppCompatActivity implements View.OnClickListener{
+public class DetalleFotoActivity extends AppCompatActivity implements View.OnClickListener, CompartirFotoFragment.OnFragmentInteractionListener{
 
     private CompartirFotoFragment compartirFotoFragment;
     private Button btnCompartir;
@@ -35,26 +32,23 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void bindUI(){
-        ft = getSupportFragmentManager().beginTransaction();
         btnCompartir = findViewById(R.id.btnCompartir);
         btnCompartir.setOnClickListener(this);
 
         init();
-        loadData();
+
     }
 
     public void init(){
+        ft = getSupportFragmentManager().beginTransaction();
         compartirFotoFragment = CompartirFotoFragment.newInstance();
         ft.replace(R.id.fragmentCompartir, compartirFotoFragment);
         ft.commit();
+
+        loadData();
     }
 
     public void loadData(){
-
-        bitmap = FotoSingleton.getInstance().getBitmap();
-        imageResource = FotoSingleton.getInstance().getImageResource();
-        compartirFotoFragment.getImageViewFoto().setImageBitmap(bitmap);
-        ViewTreeObserver vto = compartirFotoFragment.getImageViewMarco().getViewTreeObserver();
 //        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 //            public boolean onPreDraw() {
 //                compartirFotoFragment.getImageViewMarco().getViewTreeObserver().removeOnPreDrawListener(this);
@@ -65,6 +59,15 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
 //            }
 //        });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bitmap = FotoSingleton.getInstance().getBitmap();
+        imageResource = FotoSingleton.getInstance().getImageResource();
+        compartirFotoFragment.getImageViewFoto().setImageBitmap(bitmap);
+        ViewTreeObserver vto = compartirFotoFragment.getImageViewMarco().getViewTreeObserver();
     }
 
     @Override
@@ -122,4 +125,8 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
         return imageUri;
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

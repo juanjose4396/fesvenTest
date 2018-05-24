@@ -37,6 +37,8 @@ public class CompartirFotoFragment extends Fragment {
      */
     public static CompartirFotoFragment newInstance() {
         CompartirFotoFragment fragment = new CompartirFotoFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -88,17 +90,10 @@ public class CompartirFotoFragment extends Fragment {
         return imageViewMarco;
     }
 
-    public void setImageViewMarco(ImageView imageViewMarco) {
-        this.imageViewMarco = imageViewMarco;
-    }
-
     public ImageView getImageViewFoto() {
         return imageViewFoto;
     }
 
-    public void setImageViewFoto(ImageView imageViewFoto) {
-        this.imageViewFoto = imageViewFoto;
-    }
 
     /**
      * This interface must be implemented by activities that contain this

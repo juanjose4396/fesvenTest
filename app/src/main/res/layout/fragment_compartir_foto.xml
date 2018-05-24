@@ -6,7 +6,7 @@
     tools:context=".CompartirFotoFragment">
 
     <ImageView
-        android:id="@+id/imageViewMarco"
+        android:id="@+id/imageViewFoto"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:adjustViewBounds="true"
@@ -14,7 +14,7 @@
         android:scaleType="fitXY"/>
 
     <ImageView
-        android:id="@+id/imageViewFoto"
+        android:id="@+id/imageViewMarco"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:adjustViewBounds="true"
