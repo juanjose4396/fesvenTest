@@ -6,12 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
@@ -19,10 +19,10 @@ import java.io.ByteArrayOutputStream;
 
 public class DetalleFotoActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageView imageViewFoto;
-    private ImageView imageViewMarco;
+    private CompartirFotoFragment compartirFotoFragment;
     private Button btnCompartir;
     private Bitmap bitmap;
+    private FragmentTransaction ft;
     private int imageResource;
     private ConstraintLayout LAYOUT_IMAGEN;
 
@@ -35,30 +35,35 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void bindUI(){
-        LAYOUT_IMAGEN = findViewById(R.id.layout_foto_marco);
-        imageViewMarco = LAYOUT_IMAGEN.findViewById(R.id.imageViewMarco);
-        imageViewFoto = LAYOUT_IMAGEN.findViewById(R.id.imageViewFoto);
+        ft = getSupportFragmentManager().beginTransaction();
         btnCompartir = findViewById(R.id.btnCompartir);
         btnCompartir.setOnClickListener(this);
 
+        init();
         loadData();
+    }
+
+    public void init(){
+        compartirFotoFragment = CompartirFotoFragment.newInstance();
+        ft.replace(R.id.fragmentCompartir, compartirFotoFragment);
+        ft.commit();
     }
 
     public void loadData(){
 
         bitmap = FotoSingleton.getInstance().getBitmap();
         imageResource = FotoSingleton.getInstance().getImageResource();
-        /*ViewTreeObserver vto = imageViewMarco.getViewTreeObserver();
-        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            public boolean onPreDraw() {
-                imageViewMarco.getViewTreeObserver().removeOnPreDrawListener(this);
-                int finalHeight = imageViewMarco.getMeasuredHeight();
-                int finalWidth = imageViewMarco.getMeasuredWidth();
-                Picasso.get().load(imageResource).resize(finalHeight,finalWidth).into(imageViewMarco);
-                return true;
-            }
-        });*/
-        imageViewFoto.setImageBitmap(bitmap);
+        compartirFotoFragment.getImageViewFoto().setImageBitmap(bitmap);
+        ViewTreeObserver vto = compartirFotoFragment.getImageViewMarco().getViewTreeObserver();
+//        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//            public boolean onPreDraw() {
+//                compartirFotoFragment.getImageViewMarco().getViewTreeObserver().removeOnPreDrawListener(this);
+//                int finalHeight = compartirFotoFragment.getImageViewMarco().getMeasuredHeight();
+//                int finalWidth = compartirFotoFragment.getImageViewMarco().getMeasuredWidth();
+//                Picasso.get().load(imageResource).resize(finalHeight,finalWidth).into(compartirFotoFragment.getImageViewMarco());
+//                return true;
+//            }
+//        });
 
     }
 

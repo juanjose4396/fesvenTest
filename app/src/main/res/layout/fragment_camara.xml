@@ -31,7 +31,7 @@
             app:layout_constraintBottom_toTopOf="@+id/pageIndicator"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.pixelcan.inkpageindicator.InkPageIndicator
             android:id="@+id/pageIndicator"
