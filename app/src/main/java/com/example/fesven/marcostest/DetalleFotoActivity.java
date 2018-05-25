@@ -1,21 +1,29 @@
 package com.example.fesven.marcostest;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 
 public class DetalleFotoActivity extends AppCompatActivity implements View.OnClickListener, CompartirFotoFragment.OnFragmentInteractionListener{
 
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private CompartirFotoFragment compartirFotoFragment;
     private Button btnCompartir;
     private Bitmap bitmap;
@@ -42,23 +50,24 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
     public void init(){
         ft = getSupportFragmentManager().beginTransaction();
         compartirFotoFragment = CompartirFotoFragment.newInstance();
-        ft.replace(R.id.fragmentCompartir, compartirFotoFragment);
+        ft.add(R.id.fragmentCompartir, compartirFotoFragment);
         ft.commit();
-
-        loadData();
     }
 
-    public void loadData(){
-//        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-//            public boolean onPreDraw() {
-//                compartirFotoFragment.getImageViewMarco().getViewTreeObserver().removeOnPreDrawListener(this);
-//                int finalHeight = compartirFotoFragment.getImageViewMarco().getMeasuredHeight();
-//                int finalWidth = compartirFotoFragment.getImageViewMarco().getMeasuredWidth();
-//                Picasso.get().load(imageResource).resize(finalHeight,finalWidth).into(compartirFotoFragment.getImageViewMarco());
-//                return true;
-//            }
-//        });
-
+    public void pedirPermiso(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            }
+        }else {
+            compartir();
+        }
     }
 
     @Override
@@ -67,16 +76,38 @@ public class DetalleFotoActivity extends AppCompatActivity implements View.OnCli
         bitmap = FotoSingleton.getInstance().getBitmap();
         imageResource = FotoSingleton.getInstance().getImageResource();
         compartirFotoFragment.getImageViewFoto().setImageBitmap(bitmap);
-        ViewTreeObserver vto = compartirFotoFragment.getImageViewMarco().getViewTreeObserver();
+        compartirFotoFragment.getImageViewMarco().setImageResource(R.drawable.mir);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+// If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    compartir();
+                } else {
+                    Toast.makeText(this, "Debe aceptar los permisos",Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
     }
 
     @Override
     public void onClick(View view) {
+        pedirPermiso();
+    }
 
+    public void compartir(){
+        Log.d("dsds","dsds");
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/jpeg");
 
-        Uri imageUri = convertBitmapUri(getViewBitmap(LAYOUT_IMAGEN),"compartir");
+        FrameLayout fl = findViewById(R.id.fragmentCompartir);
+
+        Uri imageUri = convertBitmapUri(getViewBitmap(fl),"compartir");
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
         startActivity(Intent.createChooser(share, "Select"));
     }
